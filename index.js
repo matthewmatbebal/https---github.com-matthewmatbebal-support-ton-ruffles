@@ -10,7 +10,7 @@ const bot = new Telegraf(process.env.BOT_TOKEN);
 bot.start((ctx) => {
   if (chats[ctx.chat.id]) {
   }
-  console.log(ctx.message.from);
+  console.log(ctx.message.from); 
   ctx.reply("Welcome");
 });
 bot.help((ctx) => ctx.reply("Send me a sticker"));
