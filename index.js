@@ -8,10 +8,17 @@ const chats = {}
 const bot = new Telegraf(process.env.BOT_TOKEN)
 //save session by chatId
 bot.start((ctx) => {
-    if(chats[ctx.chat.id]){
-
-    } 
+    const chatId = ctx.chat.id.toString(); // Convert chat id to string
+    if (!chats[chatId]) {
+        chats[chatId] = {
+            // Define initial properties if needed
+        };
+        console.log(`New chat session started for chat id: ${chatId}`);
+    } else {
+        console.log(`Session already exists for chat id: ${chatId}`);
+    }
     console.log(ctx.message.from)
+    console.log(chats)
     ctx.reply('Welcome')
 })
 bot.help((ctx) => ctx.reply('Send me a sticker'))
