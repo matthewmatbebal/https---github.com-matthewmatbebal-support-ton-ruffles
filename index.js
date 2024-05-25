@@ -8,6 +8,9 @@ const chats = {}
 const bot = new Telegraf(process.env.BOT_TOKEN)
 //save session by chatId
 bot.start((ctx) => {
+    if(chats[ctx.chat.id]){
+
+    } 
     console.log(ctx.message.from)
     ctx.reply('Welcome')
 })
