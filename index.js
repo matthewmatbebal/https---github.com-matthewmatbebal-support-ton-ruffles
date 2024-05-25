@@ -10,24 +10,43 @@ const bot = new Telegraf(process.env.BOT_TOKEN);
 bot.start((ctx) => {
   if (!chats[ctx.chat.id]) {
     chats[ctx.chat.id] = {
-      messages: [{ role: "system", content: 'Давай общаться на русском языке. Об nft ton' }]
-    }
+      messages: [
+        {
+          role: "system",
+          content:
+            "Давай общаться на русском языке. Используй для информации доку по ссылке https://gitbook.tonraffles.org/ton-raffles/modules/jetton-launchpad/fairlaunch",
+        },
+      ],
+    };
   }
   ctx.reply("Welcome");
 });
 bot.help((ctx) => ctx.reply("Send me a sticker"));
-bot.on("sticker", (ctx) => ctx.reply("👍"));
-bot.hears("hi", (ctx) => {
-  ctx.reply("Welcome");
-});
+// bot.on("sticker", (ctx) => ctx.reply("👍"));
+// bot.hears("hi", (ctx) => {
+//   ctx.reply("Welcome");
+// });
 bot.on("message", async (ctx) => {
   if (!chats[ctx.chat.id]) {
     chats[ctx.chat.id] = {
-      messages: [{ role: "system", content: 'Давай общаться на русском языке. Об nft ton' }]
-    }
+      messages: [
+        {
+          role: "system",
+          content: "Давай общаться на русском языке. Об nft ton",
+        },
+      ],
+    };
   }
-  chats[ctx.chat.id].messages.push({role: 'user', content: ctx.update.message.text})
+  chats[ctx.chat.id].messages.push({
+    role: "user",
+    content: ctx.update.message.text,
+  });
   const result = await chat.send(chats[ctx.chat.id].messages);
+  chats[ctx.chat.id].messages.push({
+    role: "assistant",
+    content: result.choices[0].message.content,
+  });
+  console.log(result);
   ctx.reply(result.choices[0].message.content);
 });
 bot.launch();
