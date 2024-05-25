@@ -31,4 +31,7 @@ bot.on("message", async (ctx) => {
   const result = await chat.send(chats[ctx.chat.id].messages);
   ctx.reply(result.choices[0].message.content);
 });
+
+
 bot.launch();
+
