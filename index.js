@@ -3,6 +3,10 @@ const chat = require("./chat");
 
 const { Telegraf } = require("telegraf");
 
+const links = require("./links.json").map(
+  (link) => `https://gitbook.tonraffles.org${link}`
+);
+
 const chats = {};
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
@@ -13,13 +17,14 @@ bot.start((ctx) => {
       messages: [
         {
           role: "system",
-          content:
-            "Давай общаться на русском языке. Используй для информации доку по ссылке https://gitbook.tonraffles.org/ton-raffles/modules/jetton-launchpad/fairlaunch",
+          content: `Давай общаться на русском языке. Используй для информации доку по ссылкам ${links.join(
+            ","
+          )}`,
         },
       ],
     };
   }
-  console.log(ctx.message.from); 
+  console.log(ctx.message.from);
   ctx.reply("Welcome");
 });
 bot.help((ctx) => ctx.reply("Send me a sticker"));

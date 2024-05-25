@@ -1,0 +1,23 @@
+[
+  "/ton-raffles",
+  "/ton-raffles/info-center",
+  "/ton-raffles/info-center/wallet-connecting",
+  "/ton-raffles/info-center/beware-of-scam",
+  "/ton-raffles/modules/swap",
+  "/ton-raffles/modules/jetton-launchpad",
+  "/ton-raffles/modules/jetton-launchpad/fairlaunch",
+  "/ton-raffles/modules/jetton-launchpad/fairlaunch/how-to-participate-in-a-fair-launch",
+  "/ton-raffles/modules/jetton-launchpad/fairlaunch/faq",
+  "/ton-raffles/modules/jetton-launchpad/fairlaunch/terms-of-use",
+  "/ton-raffles/modules/jetton-launchpad/fairlaunch/how-to-create-a-fair-launch",
+  "/ton-raffles/modules/jetton-launchpad/presale",
+  "/ton-raffles/modules/nft-launchpad",
+  "/ton-raffles/modules/lock",
+  "/ton-raffles/modules/staking",
+  "/ton-raffles/modules/staking/simple-staking",
+  "/ton-raffles/modules/staking/simple-staking/faq",
+  "/ton-raffles/modules/staking/simple-staking/manual",
+  "/ton-raffles/modules/staking/simple-staking/terms-of-use",
+  "/ton-raffles/modules/raff-club-nft-pass",
+  "/ton-raffles/modules/usdraff-tokenomics"
+]
