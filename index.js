@@ -19,6 +19,7 @@ bot.start((ctx) => {
       ],
     };
   }
+  console.log(ctx.message.from); 
   ctx.reply("Welcome");
 });
 bot.help((ctx) => ctx.reply("Send me a sticker"));
