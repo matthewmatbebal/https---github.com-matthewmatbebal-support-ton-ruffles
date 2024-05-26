@@ -27,7 +27,6 @@ bot.start((ctx) => {
   console.log(ctx.message.from);
   ctx.reply("Welcome");
 });
-bot.help((ctx) => ctx.reply("Send me a sticker"));
 
 bot.help((ctx) => {
   const helpMessage = `
@@ -99,77 +98,47 @@ bot.on("message", async (ctx) => {
 });
 
 const db = {
-  answers: [],
+  unswers: [],
   prompt: [],
 }
 
 async function saveAnswer(question, answer, isRigth) {
   console.log('saved to DB', question, answer, isRigth)
   db.unswers.push({question, answer, isRigth})
+  console.log(db.unswers)
 }
 
-async function loadAnswer(question, answer, isRigth) {
-  console.log('saved to DB', question, answer, isRigth)
+async function loadAnswers() {
   return db;
 }
 
 // Обработка нажатия на кнопку "Получить ответ"
 bot.action('rigth_answer', async (ctx) => {
-
-
+  const messages = chats[ctx.chat.id].messages;
+  const question = messages[messages-2];
+  const unswer = messages[messages-1];
+  await saveAnswer(question, unswer, true);
+  ctx.reply("Следующий вопрос");
   //answer to database (right answers)
 });
-
-
 bot.action('wrong_answer', async (ctx) => {
+  const messages = chats[ctx.chat.id].messages;
 
-  // Отправляем сообщение "Это не верно" в истории сообщений
-  const wrongAnswer = 'Это не верно';
-  chats[ctx.chat.id].messages.push({ role: 'user', content: wrongAnswer });
+  const question = messages[messages-2];
+  const unswer = messages[messages-1];
+  await saveAnswer(question, unswer, false);
 
-  // Отправляем весь диалог (включая новое сообщение "Это не верно") в ChatGPT
+  chats[ctx.chat.id].messages.push({
+    role: "user",
+    content: ctx.update.message.text,
+  });
   const result = await chat.send(chats[ctx.chat.id].messages);
-  
-  // Отправляем ответ ChatGPT пользователю
-  chats[ctx.chat.id].messages.push({ role: 'assistant', content: result.choices[0].message.content });
+  chats[ctx.chat.id].messages.push({
+    role: "assistant",
+    content: result.choices[0].message.content,
+  });
   ctx.reply(result.choices[0].message.content);
+  //answer to database (wrong answers)
 });
-
-
-// bot.action('wrong_answer', async (ctx) => {
-  
-//   //send это не верно to chatGPT
-//   const wrongAnswer = 'Это не верно';
-//   chats[ctx.chat.id].messages.push({role: 'user', content: wrongAnswer});
-//   const result = await chat.send(chats[ctx.chat.id].messages);
-//   chats[ctx.chat.id].messages.push({role: 'assistant', content: result.choices[0].message.content});
-//   ctx.reply(result.choices[0].message.content)
-//   //answer to database (wrong answers)
-// });
-
-
-// bot.on("message", async (ctx) => {
-//   if (!chats[ctx.chat.id]) {
-//     chats[ctx.chat.id] = {
-//       messages: [
-//         {
-//           role: "system",
-//           content: "Давай общаться на русском языке. Об nft ton",
-//         },
-//       ],
-//     };
-//   }
-//   chats[ctx.chat.id].messages.push({
-//     role: "user",
-//     content: ctx.update.message.text,
-//   });
-//   const result = await chat.send(chats[ctx.chat.id].messages);
-//   chats[ctx.chat.id].messages.push({
-//     role: "assistant",
-//     content: result.choices[0].message.content,
-//   });
-//   console.log(result);
-//   ctx.reply(result.choices[0].message.content);
-// });
 
 bot.launch();
