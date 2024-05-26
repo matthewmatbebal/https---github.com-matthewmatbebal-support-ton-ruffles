@@ -99,7 +99,7 @@ bot.on("message", async (ctx) => {
 });
 
 const db = {
-  unswers: [],
+  answers: [],
   prompt: [],
 }
 
@@ -119,34 +119,57 @@ bot.action('rigth_answer', async (ctx) => {
 
   //answer to database (right answers)
 });
+
+
 bot.action('wrong_answer', async (ctx) => {
-  const result = await chat.send(chats[ctx.chat.id].messages);
-  //answer to database (wrong answers)
-});
 
+  // Отправляем сообщение "Это не верно" в истории сообщений
+  const wrongAnswer = 'Это не верно';
+  chats[ctx.chat.id].messages.push({ role: 'user', content: wrongAnswer });
 
-bot.on("message", async (ctx) => {
-  if (!chats[ctx.chat.id]) {
-    chats[ctx.chat.id] = {
-      messages: [
-        {
-          role: "system",
-          content: "Давай общаться на русском языке. Об nft ton",
-        },
-      ],
-    };
-  }
-  chats[ctx.chat.id].messages.push({
-    role: "user",
-    content: ctx.update.message.text,
-  });
+  // Отправляем весь диалог (включая новое сообщение "Это не верно") в ChatGPT
   const result = await chat.send(chats[ctx.chat.id].messages);
-  chats[ctx.chat.id].messages.push({
-    role: "assistant",
-    content: result.choices[0].message.content,
-  });
-  console.log(result);
+  
+  // Отправляем ответ ChatGPT пользователю
+  chats[ctx.chat.id].messages.push({ role: 'assistant', content: result.choices[0].message.content });
   ctx.reply(result.choices[0].message.content);
 });
+
+
+// bot.action('wrong_answer', async (ctx) => {
+  
+//   //send это не верно to chatGPT
+//   const wrongAnswer = 'Это не верно';
+//   chats[ctx.chat.id].messages.push({role: 'user', content: wrongAnswer});
+//   const result = await chat.send(chats[ctx.chat.id].messages);
+//   chats[ctx.chat.id].messages.push({role: 'assistant', content: result.choices[0].message.content});
+//   ctx.reply(result.choices[0].message.content)
+//   //answer to database (wrong answers)
+// });
+
+
+// bot.on("message", async (ctx) => {
+//   if (!chats[ctx.chat.id]) {
+//     chats[ctx.chat.id] = {
+//       messages: [
+//         {
+//           role: "system",
+//           content: "Давай общаться на русском языке. Об nft ton",
+//         },
+//       ],
+//     };
+//   }
+//   chats[ctx.chat.id].messages.push({
+//     role: "user",
+//     content: ctx.update.message.text,
+//   });
+//   const result = await chat.send(chats[ctx.chat.id].messages);
+//   chats[ctx.chat.id].messages.push({
+//     role: "assistant",
+//     content: result.choices[0].message.content,
+//   });
+//   console.log(result);
+//   ctx.reply(result.choices[0].message.content);
+// });
 
 bot.launch();
